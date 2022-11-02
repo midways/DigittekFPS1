@@ -30,18 +30,21 @@ public class Gamecontrol : MonoBehaviour
     }
 
     //Tilføjer point til den totale score, Blinker vores lampe og spawner en ny kegle.
-    public void AddScore() {
+    public void AddScore(float x, float y) {
+        Color randomfarve = new Color(Random.Range(0f,1f), Random.Range(0f,1f), Random.Range(0f,1f), 1f);
         score += 1;
         scoreText.text = "Score: " + score;
-        apiScript.Blink(lampe);
-        StartCoroutine(nykegle());
+        apiScript.ColorSetup(lampe, x, y);
+        StartCoroutine(nykegle(randomfarve));
     }
 
     //Spawner en ny kegle.
-    IEnumerator nykegle(){
+    IEnumerator nykegle(Color32 nyfarve){
+        
         yield return new WaitForSeconds(1);
         Vector3 position = new Vector3(Random.Range(39.19F, -1.06F), 0.75F, Random.Range(40.16F, 5.26F));
-        Instantiate(kegle, position, transform.rotation);
+        var nykegle = (GameObject)Instantiate(kegle, position, transform.rotation);
+        nykegle.transform.GetComponent<Renderer>().material.color = nyfarve;
     }
 }
 }
